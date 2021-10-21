@@ -1,6 +1,5 @@
 .idea
 /venv
-main.py
 __pycache__
 *.jpg
 config.py
