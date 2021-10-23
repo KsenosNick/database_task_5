@@ -68,10 +68,16 @@ try:
         """).fetchall(), '\n')
         print(f'9. Название альбомов, содержащих наименьшее количество треков: \n',
         connection.execute("""
-            SELECT a.title FROM album a
+            SELECT a.title, COUNT(t.id) FROM album a
                 JOIN track t ON a.id = t.album_id
                 GROUP BY a.title
-                ORDER BY COUNT(t.id);
+                HAVING COUNT(t.id) = (
+                    SELECT COUNT(t.id) FROM album a
+                        JOIN track t ON a.id = t.album_id
+                        GROUP BY a.title 
+                        ORDER BY count(t.id)
+                        LIMIT 1
+                        );
         """).fetchall(), '\n')
 
     finally:
